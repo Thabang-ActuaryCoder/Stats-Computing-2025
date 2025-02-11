@@ -1,18 +1,19 @@
 ---
 title: "Statistical Computing with R"
-# subtitle: "Day Five : Projects in R"
 subtitle: "Part 3: Practical Day Five"
-author: "Baloyi Thabang Bongani Junior "
+author: "Baloyi Thabang Bongani Junior"
 institute: "Department of Statistical Sciences, University of Cape Town"
-date:  "`r format(Sys.time(), '%d %B %Y')`"
-format: revealjs
+date: "`r format(Sys.time(), '%d %B %Y')`"
+format: 
+  html:
+    code-background: true
 editor: visual
+pdf-engine: pdflatex
 css: style.css
 title-slide-attributes: 
   data-background-image: statslogo.png, UCTCrest.jpeg
   data-background-size: 15%, 15%
   data-background-position: 0% 95%, 95% 95%
-
 execute: 
   echo: true
   eval: true
@@ -67,9 +68,11 @@ if (!requireNamespace("remotes", quietly = TRUE)) {
   install.packages("remotes")
 }
 remotes::install_github("SATVILab/UtilsDataRSV")
+
+library(knitr)
 ```
 
-## 1. 
+## 1.
 
 ```{r}
 
@@ -85,7 +88,7 @@ class(flights)
 flights
 ```
 
-## 2. 
+## 2.
 
 ```{r}
 
@@ -102,11 +105,11 @@ dist_tbl
 
 ```
 
-## 3. 
+## 3.
 
 Carrier "OO" has only one observation hence the standard deviation is "NA", and also the rest are "0" because there is one unique distance between the values, so hence the standard deviation is 0.
 
-## 4. 
+## 4.
 
 ```{r}
 
@@ -119,7 +122,7 @@ dep_delay_df
 
 ```
 
-## 5. 
+## 5.
 
 ```{r}
 
@@ -133,20 +136,18 @@ flights |>
 
 ```
 
-## 6. 
+## 6.
 
 ```{r}
 
 # 1. Identify routes with multiple airlines
 
-multi_airline_routes <- flights |>
+flights |>
   group_by(origin, dest) |>
-  summarise(n_airlines = n_distinct(carrier)) |>
+  summarise(n_airlines = n_distinct(carrier), .groups = "drop") |>
   filter(n_airlines > 1) |>
-  ungroup()
-
-print("Routes with multiple airlines:")
-multi_airline_routes %>% head()
+  head() |>
+  kable(caption = "Routes served by multiple airlines", digits = 0)
 
 ```
 
@@ -154,15 +155,24 @@ multi_airline_routes %>% head()
 
 # 2. Calculate average delays per airline on these routes
 
+multi_airline_routes <- flights |>
+  group_by(origin, dest) |>
+  summarise(n_airlines = n_distinct(carrier)) |>
+  filter(n_airlines > 1) |>
+  ungroup()
+
 route_delays <- flights |>
   semi_join(multi_airline_routes, by = c("origin", "dest")) |>
   group_by(origin, dest, carrier) |>
-  summarise(avg_arr_delay = mean(arr_delay, na.rm = TRUE)) |>
+  summarise(avg_arr_delay = mean(arr_delay, na.rm = TRUE), .groups = "drop") |>
   left_join(airlines, by = "carrier") |>
   select(origin, dest, name, avg_arr_delay)
 
-print("Average delays per airline on shared routes:")
-route_delays |> arrange(origin, dest) |> head()
+route_delays |>
+  arrange(origin, dest) |>
+  head() |>
+  kable(caption = "Average Arrival Delays per Airline on Shared Routes", digits = 2)
+
 ```
 
 ```{r}
@@ -175,11 +185,15 @@ route_comparison <- route_delays |>
     best_delay = min(avg_arr_delay),
     worst_airline = name[which.max(avg_arr_delay)],
     worst_delay = max(avg_arr_delay),
-    delay_diff = worst_delay - best_delay
+    delay_diff = worst_delay - best_delay,
+    .groups = "drop"
   )
 
-print("\nRoute performance comparison:")
-route_comparison |> arrange(desc(delay_diff)) |> head()
+route_comparison |>
+  arrange(desc(delay_diff)) |>
+  head() |>
+  kable(caption = "Route Performance Comparison: Best vs. Worst Airlines", digits = 2)
+
 ```
 
 ```{r}
@@ -189,11 +203,12 @@ route_comparison |> arrange(desc(delay_diff)) |> head()
 max_diff_route <- route_comparison |>
   filter(delay_diff == max(delay_diff, na.rm = TRUE))
 
-print("Route with largest performance gap:")
-max_diff_route
+max_diff_route |>
+  kable(caption = "Route with the Largest Performance Gap", digits = 2)
+
 ```
 
-## 7. 
+## 7.
 
 ```{r}
 df <- structure(list(id = c("id_1", "id_2", "id_3", "id_4", "id_5", 
@@ -299,7 +314,7 @@ NA, 77, 80, 115, 85, 88, 109, NA, 71, 90, 94, 91, 87, 113, 93,
 UtilsDataRSV::view_cols(df)
 ```
 
-a) **Identify Typos:** in this dataset, the first 10 rows reveals that "disease_status" contains three unique entries (e.g `"healthy"`, `"diseased"`, and the typo `"Healthy"`) and also `"female"`, `"male"`, and the typo `"femal"`.
+a)  **Identify Typos:** in this dataset, the first 10 rows reveals that "disease_status" contains three unique entries (e.g `"healthy"`, `"diseased"`, and the typo `"Healthy"`) and also `"female"`, `"male"`, and the typo `"femal"`.
 
 b\) **Detect Missing Data:** It’s easy to overlook missing values (NAs).
 
