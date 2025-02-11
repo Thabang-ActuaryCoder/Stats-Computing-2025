@@ -79,3 +79,80 @@ knitr::opts_chunk$set(warning = F,
         11 February 2025 % Add the current date or date of submission here (can include day or just month and year)    
    \end{center}
 \end{titlepage}
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{Practical 1}
+
+```{r}
+# =========================
+# Clear the environment
+# =========================
+
+rm(list = ls(all= TRUE))
+
+# =========================
+# Load Packages
+# =========================
+
+library(knitr)
+
+```
+
+\begin{enumerate}
+
+\item 
+
+```{r}
+Rows.with.NA = airquality[apply(airquality,1, function(x) any(is.na(x))),]
+```
+
+\item
+
+```{r}
+airquality.summary = data.frame(
+  variable = c("Ozone","Temperature"),
+  Mean = c(mean(airquality$Ozone,na.rm = TRUE),mean(airquality$Temp,na.rm = TRUE)) |> 
+   signif(3),
+  sd = c(sd(airquality$Ozone,na.rm = TRUE),sd(airquality$Temp,na.rm = TRUE)) |> 
+    signif(3),
+  min = c(min(airquality$Ozone,na.rm = TRUE),min(airquality$Temp,na.rm = TRUE)) |> 
+    signif(3),
+  max = c(max(airquality$Ozone,na.rm = TRUE),max(airquality$Temp,na.rm = TRUE)) |> 
+    signif(3)
+)
+
+kable(airquality.summary,caption = "Summary statistics for Ozone and Temperature")
+```
+
+\item
+
+```{r}
+Y = cars$speed
+X = cbind(1,cars$dist) |> as.matrix() 
+colnames(X) = c("Intercept","Distance")
+
+beta.vec = solve(t(X) %*% X) %*% t(X) %*% Y
+
+colnames(beta.vec) = "estimate"
+
+beta.vec |> signif(3) |> knitr::kable()
+```
+
+\item
+
+```{r}
+beta.mat = lm(
+  speed ~ dist,
+  data = cars
+) |> coef() |> signif(3)
+
+beta.mat |> knitr::kable()
+```
+
+
+\end{enumerate}
+
+

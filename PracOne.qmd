@@ -2,19 +2,20 @@
 
 ---
 title: "Statistical Computing with R"
-# subtitle: "Day One : Projects in R"
-subtitle: "Part 1: Practical One"
-author: "Baloyi Thabang Bongani Junior "
+subtitle: "Day Two : Practical One"
+author: "Baloyi Thabang Bongani Junior"
 institute: "Department of Statistical Sciences, University of Cape Town"
-date:  "`r format(Sys.time(), '%d %B %Y')`"
-format: revealjs
+date: "`r format(Sys.time(), '%d %B %Y')`"
+format: 
+  html:
+    code-background: true
 editor: visual
+pdf-engine: pdflatex
 css: style.css
 title-slide-attributes: 
   data-background-image: statslogo.png, UCTCrest.jpeg
   data-background-size: 15%, 15%
   data-background-position: 0% 95%, 95% 95%
-
 execute: 
   echo: true
   eval: true
