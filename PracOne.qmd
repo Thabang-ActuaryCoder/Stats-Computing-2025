@@ -90,4 +90,5 @@ beta_mat = lm(
 ) |> coef() |> signif(3)
 
 beta_mat |> knitr::kable()
+
 ```
