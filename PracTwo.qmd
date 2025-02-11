@@ -71,7 +71,9 @@ customLowess <- function(x, y, f) {
     if (d_max == 0) {
       weights <- rep(1, k)
     } else {
+      
       weights <- (1 - (distances[neighbors] / d_max)^3)^3
+      
     }
     
     X <- cbind(1, x[neighbors])
