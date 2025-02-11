@@ -129,9 +129,9 @@ flights |>
 
 ```
 
-## 6. 
+## 6. Using the `airlines` and `flights` datasets, do the following, showing the output from each step:
 
-## 7. 
+## 7. Identify all columns with missing entries, typos and any other inconsistencies in the dataset below (load it just by running the code; created using `dput` command, FYI):
 
 ```{r}
 structure(list(id = c("id_1", "id_2", "id_3", "id_4", "id_5", 
