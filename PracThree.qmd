@@ -62,6 +62,11 @@ if (!requireNamespace("tibble", quietly = TRUE)) {
   install.packages("tibble")
 }
 library(tibble)
+
+if (!requireNamespace("remotes", quietly = TRUE)) {
+  install.packages("remotes")
+}
+remotes::install_github("SATVILab/UtilsDataRSV")
 ```
 
 ## 1. Display the `flights` dataset in an alternative format to simply printing it (i.e. running `flights`).
@@ -131,10 +136,68 @@ flights |>
 
 ## 6. Using the `airlines` and `flights` datasets, do the following, showing the output from each step:
 
+```{r}
+
+# 1. Identify routes with multiple airlines
+
+multi_airline_routes <- flights |>
+  group_by(origin, dest) |>
+  summarise(n_airlines = n_distinct(carrier)) |>
+  filter(n_airlines > 1) |>
+  ungroup()
+
+print("Routes with multiple airlines:")
+multi_airline_routes %>% head()
+
+```
+
+```{r}
+
+# 2. Calculate average delays per airline on these routes
+
+route_delays <- flights |>
+  semi_join(multi_airline_routes, by = c("origin", "dest")) |>
+  group_by(origin, dest, carrier) |>
+  summarise(avg_arr_delay = mean(arr_delay, na.rm = TRUE)) |>
+  left_join(airlines, by = "carrier") |>
+  select(origin, dest, name, avg_arr_delay)
+
+print("Average delays per airline on shared routes:")
+route_delays |> arrange(origin, dest) |> head()
+```
+
+```{r}
+# 3. Identify best/worst performing airlines per route
+
+route_comparison <- route_delays |>
+  group_by(origin, dest) |>
+  summarise(
+    best_airline = name[which.min(avg_arr_delay)],
+    best_delay = min(avg_arr_delay),
+    worst_airline = name[which.max(avg_arr_delay)],
+    worst_delay = max(avg_arr_delay),
+    delay_diff = worst_delay - best_delay
+  )
+
+print("\nRoute performance comparison:")
+route_comparison |> arrange(desc(delay_diff)) |> head()
+```
+
+```{r}
+
+# 4. Route with greatest difference
+
+max_diff_route <- route_comparison |>
+  filter(delay_diff == max(delay_diff, na.rm = TRUE))
+
+print("Route with largest performance gap:")
+max_diff_route
+```
+
 ## 7. Identify all columns with missing entries, typos and any other inconsistencies in the dataset below (load it just by running the code; created using `dput` command, FYI):
 
 ```{r}
-structure(list(id = c("id_1", "id_2", "id_3", "id_4", "id_5", 
+df <- structure(list(id = c("id_1", "id_2", "id_3", "id_4", "id_5", 
 "id_6", "id_7", "id_8", "id_9", "id_10", "id_11", "id_12", "id_13", 
 "id_14", "id_15", "id_16", "id_17", "id_18", "id_19", "id_20", 
 "id_21", "id_22", "id_23", "id_24", "id_25", "id_26", "id_27", 
@@ -234,6 +297,6 @@ NA, 77, 80, 115, 85, 88, 109, NA, 71, 90, 94, 91, 87, 113, 93,
 ```
 
 ```{r}
-
-
+df
+UtilsDataRSV::view_cols(df)
 ```
