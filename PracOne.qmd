@@ -1,0 +1,93 @@
+## 
+
+---
+title: "Statistical Computing with R"
+# subtitle: "Day One : Projects in R"
+subtitle: "Part 1: Practical One"
+author: "Baloyi Thabang Bongani Junior "
+institute: "Department of Statistical Sciences, University of Cape Town"
+date:  "`r format(Sys.time(), '%d %B %Y')`"
+format: revealjs
+editor: visual
+css: style.css
+title-slide-attributes: 
+  data-background-image: statslogo.png, UCTCrest.jpeg
+  data-background-size: 15%, 15%
+  data-background-position: 0% 95%, 95% 95%
+
+execute: 
+  echo: true
+  eval: true
+  warning: false
+  message: false
+---
+
+```{r,include=FALSE}
+
+# =========================
+# Clear the environment
+# =========================
+
+rm(list = ls(all= TRUE))
+
+```
+
+```{r, include=FALSE}
+
+# =========================
+# Load Packages
+# =========================
+
+library(knitr)
+```
+
+## 1. Find all rows in “airquality” that have missing values. Note that the `airquality` dataset in `R` is always available (just type `airquality` in the console to see it).
+
+```{r,echo=TRUE,cache=TRUE}
+Rows_with_NA = airquality[apply(airquality,1, function(x) any(is.na(x))),]
+```
+
+## 2. Find mean, sd, min, max for each of temperature and ozone level.
+
+```{r,echo=FALSE,cache=TRUE}
+
+airquality_summary = data.frame(
+  variable = c("Ozone","Temperature"),
+  Mean = c(mean(airquality$Ozone,na.rm = TRUE),mean(airquality$Temp,na.rm = TRUE)) |> 
+   signif(3),
+  sd = c(sd(airquality$Ozone,na.rm = TRUE),sd(airquality$Temp,na.rm = TRUE)) |> 
+    signif(3),
+  min = c(min(airquality$Ozone,na.rm = TRUE),min(airquality$Temp,na.rm = TRUE)) |> 
+    signif(3),
+  max = c(max(airquality$Ozone,na.rm = TRUE),max(airquality$Temp,na.rm = TRUE)) |> 
+    signif(3)
+)
+
+kable(airquality_summary,caption = "Summary statistics for Ozone and Temperature")
+```
+
+## 3. find the $\beta$ estimates, using the equation above, and matrix calcuations in R.
+
+```{r,echo=FALSE,cache=TRUE}
+
+Y_vec = cars$speed
+X_vec = cbind(1,cars$dist) |> as.matrix() 
+colnames(X_vec) = c("Intercept","Distance")
+
+beta_vec = solve(t(X_vec) %*% X_vec) %*% t(X_vec) %*% Y_vec
+
+colnames(beta_vec) = "estimate"
+
+beta_vec |> signif(3) |> knitr::kable()
+```
+
+## 4. Check that you get the same $\beta$ estimates as when fitting the linear regression model using lm() in R.
+
+```{r}
+beta_mat = lm(
+  speed ~ dist,
+  data = cars
+) |> coef() |> signif(3)
+
+beta_mat |> knitr::kable()
+```
