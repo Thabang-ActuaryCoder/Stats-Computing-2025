@@ -441,22 +441,24 @@ Baloyi Thabang Bongani Junior
 <span id="cb2-11"><a href=""></a>    <span class="cf">if</span> (d_max <span class="sc">==</span> <span class="dv">0</span>) {</span>
 <span id="cb2-12"><a href=""></a>      weights <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>, k)</span>
 <span id="cb2-13"><a href=""></a>    } <span class="cf">else</span> {</span>
-<span id="cb2-14"><a href=""></a>      weights <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">-</span> (distances[neighbors] <span class="sc">/</span> d_max)<span class="sc">^</span><span class="dv">3</span>)<span class="sc">^</span><span class="dv">3</span></span>
-<span id="cb2-15"><a href=""></a>    }</span>
-<span id="cb2-16"><a href=""></a>    </span>
-<span id="cb2-17"><a href=""></a>    X <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="dv">1</span>, x[neighbors])</span>
-<span id="cb2-18"><a href=""></a>    W <span class="ot">&lt;-</span> <span class="fu">diag</span>(weights)</span>
-<span id="cb2-19"><a href=""></a>    y_neighbors <span class="ot">&lt;-</span> y[neighbors]</span>
-<span id="cb2-20"><a href=""></a>    </span>
-<span id="cb2-21"><a href=""></a>    XtWX <span class="ot">&lt;-</span> <span class="fu">t</span>(X) <span class="sc">%*%</span> W <span class="sc">%*%</span> X</span>
-<span id="cb2-22"><a href=""></a>    XtWy <span class="ot">&lt;-</span> <span class="fu">t</span>(X) <span class="sc">%*%</span> W <span class="sc">%*%</span> y_neighbors</span>
-<span id="cb2-23"><a href=""></a>    </span>
-<span id="cb2-24"><a href=""></a>    beta <span class="ot">&lt;-</span> <span class="fu">solve</span>(XtWX, XtWy)</span>
-<span id="cb2-25"><a href=""></a>    smoothed[i] <span class="ot">&lt;-</span> beta[<span class="dv">1</span>] <span class="sc">+</span> beta[<span class="dv">2</span>] <span class="sc">*</span> x[i]</span>
-<span id="cb2-26"><a href=""></a>  }</span>
-<span id="cb2-27"><a href=""></a>  </span>
-<span id="cb2-28"><a href=""></a>  <span class="fu">return</span>(smoothed)</span>
-<span id="cb2-29"><a href=""></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-14"><a href=""></a>      </span>
+<span id="cb2-15"><a href=""></a>      weights <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">-</span> (distances[neighbors] <span class="sc">/</span> d_max)<span class="sc">^</span><span class="dv">3</span>)<span class="sc">^</span><span class="dv">3</span></span>
+<span id="cb2-16"><a href=""></a>      </span>
+<span id="cb2-17"><a href=""></a>    }</span>
+<span id="cb2-18"><a href=""></a>    </span>
+<span id="cb2-19"><a href=""></a>    X <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="dv">1</span>, x[neighbors])</span>
+<span id="cb2-20"><a href=""></a>    W <span class="ot">&lt;-</span> <span class="fu">diag</span>(weights)</span>
+<span id="cb2-21"><a href=""></a>    y_neighbors <span class="ot">&lt;-</span> y[neighbors]</span>
+<span id="cb2-22"><a href=""></a>    </span>
+<span id="cb2-23"><a href=""></a>    XtWX <span class="ot">&lt;-</span> <span class="fu">t</span>(X) <span class="sc">%*%</span> W <span class="sc">%*%</span> X</span>
+<span id="cb2-24"><a href=""></a>    XtWy <span class="ot">&lt;-</span> <span class="fu">t</span>(X) <span class="sc">%*%</span> W <span class="sc">%*%</span> y_neighbors</span>
+<span id="cb2-25"><a href=""></a>    </span>
+<span id="cb2-26"><a href=""></a>    beta <span class="ot">&lt;-</span> <span class="fu">solve</span>(XtWX, XtWy)</span>
+<span id="cb2-27"><a href=""></a>    smoothed[i] <span class="ot">&lt;-</span> beta[<span class="dv">1</span>] <span class="sc">+</span> beta[<span class="dv">2</span>] <span class="sc">*</span> x[i]</span>
+<span id="cb2-28"><a href=""></a>  }</span>
+<span id="cb2-29"><a href=""></a>  </span>
+<span id="cb2-30"><a href=""></a>  <span class="fu">return</span>(smoothed)</span>
+<span id="cb2-31"><a href=""></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="compare-with-rs-built-in-lowess" class="slide level2">
