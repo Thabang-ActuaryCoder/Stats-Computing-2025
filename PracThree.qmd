@@ -69,7 +69,7 @@ if (!requireNamespace("remotes", quietly = TRUE)) {
 remotes::install_github("SATVILab/UtilsDataRSV")
 ```
 
-## 1. Display the `flights` dataset in an alternative format to simply printing it (i.e. running `flights`).
+## 1. 
 
 ```{r}
 
@@ -85,7 +85,7 @@ class(flights)
 flights
 ```
 
-## 2. Rewrite this code using `dplyr` and the pipe:
+## 2. 
 
 ```{r}
 
@@ -102,15 +102,14 @@ dist_tbl
 
 ```
 
-## 3. Explain why the standard deviation is `NA` for one carrier, and why it is `0` for others. Demonstrate your answer using code.
+## 3. 
 
 Carrier "OO" has only one observation hence the standard deviation is "NA", and also the rest are "0" because there is one unique distance between the values, so hence the standard deviation is 0.
 
-## 4. Using `tidyr` and `dplyr` where appropriate, construct a dataframe where the carriers are along the columns, and the rows are the average departure delay (`dep_delay`) flown by each carrier (`carrier`) in each month.
+## 4. 
 
 ```{r}
 
-library(dplyr)
 
 dep_delay_df <- flights |>
   group_by(month, carrier) |>
@@ -120,7 +119,7 @@ dep_delay_df
 
 ```
 
-## 5. Calculate the proportion of flights that were delayed (`dep_delay` greater than 0) but arrived on or before time (`arr_delay` less than or equal to 0).
+## 5. 
 
 ```{r}
 
@@ -134,7 +133,7 @@ flights |>
 
 ```
 
-## 6. Using the `airlines` and `flights` datasets, do the following, showing the output from each step:
+## 6. 
 
 ```{r}
 
@@ -194,7 +193,7 @@ print("Route with largest performance gap:")
 max_diff_route
 ```
 
-## 7. Identify all columns with missing entries, typos and any other inconsistencies in the dataset below (load it just by running the code; created using `dput` command, FYI):
+## 7. 
 
 ```{r}
 df <- structure(list(id = c("id_1", "id_2", "id_3", "id_4", "id_5", 
@@ -297,6 +296,11 @@ NA, 77, 80, 115, 85, 88, 109, NA, 71, 90, 94, 91, 87, 113, 93,
 ```
 
 ```{r}
-df
 UtilsDataRSV::view_cols(df)
 ```
+
+a) **Identify Typos:** in this dataset, the first 10 rows reveals that "disease_status" contains three unique entries (e.g `"healthy"`, `"diseased"`, and the typo `"Healthy"`) and also `"female"`, `"male"`, and the typo `"femal"`.
+
+b\) **Detect Missing Data:** It’s easy to overlook missing values (NAs).
+
+c\) **Verify Expected Values:** For instance, the `id` column should have 500 unique entries, and `view_cols` can help you confirm this.
