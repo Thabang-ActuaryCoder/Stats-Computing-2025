@@ -1,0 +1,25 @@
+---
+title: "Statistical Computing with R"
+subtitle: "Indexing to GitHub"
+# subtitle: "Part 7: Strings, Regular Expressions, Scoping, Data Wrangling"
+author: "Birgit Erni "
+institute: "Department of Statistical Sciences, University of Cape Twon"
+date:  "`r format(Sys.time(), '%d %B %Y')`"
+format: revealjs
+editor: visual
+css: style.css
+title-slide-attributes: 
+  data-background-image: statslogo.jpg, UCTNewCrest.JPG
+  data-background-size: 15%, 15%
+  data-background-position: 0% 95%, 95% 95%
+
+execute: 
+  echo: true
+  eval: false
+  warning: false
+  message: false
+---
+
+## 
+
+<https://github.com/Thabang-ActuaryCoder/Stats-Computing-2025>
